@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { 
-  ArrowLeft, CheckCircle2, ShieldCheck, Zap, CreditCard, 
+  CheckCircle2, ShieldCheck, Zap, CreditCard, 
   Building2, Copy, Plus, Trash2, Check, RefreshCw,
   Lock, Mail, Key, Sparkles, ArrowRight, X, Loader2, Eye, EyeOff, LayoutDashboard, Globe, ChevronRight
 } from 'lucide-react';
