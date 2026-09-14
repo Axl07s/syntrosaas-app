@@ -92,5 +92,6 @@ npm run dev
 > **Architectural Note:** This system is built prioritizing edge-rendering performance and strict database-level security over client-side validation. All critical mutations (Invites, Billing, Roles) are protected via Server Actions and Postgres constraints.
 
 <div align="center">
-  <i>Engineered for production by <a href="https://axel.dev">Axel Molineros</a>.</i>
+  <i>Engineered for production by <a href="https://github.com/Axl07s">Axel Molineros</a>.</i>
 </div>
+
