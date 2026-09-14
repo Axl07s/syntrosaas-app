@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://syntrosaas-app.vercel.app/projects/syntrosaas_01.png" alt="SyntroSaaS Architecture" width="100%" />
+  <img src="https://raw.githubusercontent.com/Axl07s/portfolio-axel/master/public/projects/syntrosaas_01.png" alt="SyntroSaaS Architecture" width="100%" />
 
   # SyntroSaaS (B2B Boilerplate)
   **Production-grade Multi-Tenant SaaS Engine built with Next.js 15 & Supabase**
@@ -94,4 +94,5 @@ npm run dev
 <div align="center">
   <i>Engineered for production by <a href="https://github.com/Axl07s">Axel Molineros</a>.</i>
 </div>
+
 
