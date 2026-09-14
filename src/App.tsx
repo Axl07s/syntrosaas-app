@@ -4,6 +4,7 @@ import {
   Building2, Copy, Plus, Trash2, Check, RefreshCw,
   Lock, Mail, Key, Sparkles, ArrowRight, X, Loader2, Eye, EyeOff, LayoutDashboard, Globe, ChevronRight
 } from 'lucide-react';
+import { translations, type Language } from './translations';
 
 interface ApiKeyItem {
   id: string;
@@ -23,6 +24,23 @@ interface TeamMember {
 }
 
 export function App() {
+  const [lang, setLangState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('syntro_lang');
+      if (saved === 'en' || saved === 'es') return saved;
+      return navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en';
+    }
+    return 'en';
+  });
+
+  const setLang = (newLang: Language) => {
+    setLangState(newLang);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('syntro_lang', newLang);
+    }
+  };
+
+  const t = translations[lang];
   const [currentView, setCurrentView] = useState<'landing' | 'dashboard'>('landing');
   const [activeTab, setActiveTab] = useState<'overview' | 'workspaces' | 'keys' | 'pricing' | 'team'>('overview');
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('annual');
@@ -202,11 +220,11 @@ export function App() {
             {currentView === 'dashboard' && (
               <nav className="hidden lg:flex items-center gap-1 bg-zinc-900/90 p-1 rounded-xl border border-zinc-800 text-xs font-medium ml-1">
                 {[
-                  { id: 'overview', label: 'Overview' },
-                  { id: 'workspaces', label: 'Organizations' },
-                  { id: 'keys', label: 'API Keys' },
-                  { id: 'pricing', label: 'Plans & Stripe' },
-                  { id: 'team', label: 'Team (RBAC)' },
+                  { id: 'overview', label: t.tabs.overview },
+                  { id: 'workspaces', label: t.tabs.workspaces },
+                  { id: 'keys', label: t.tabs.keys },
+                  { id: 'pricing', label: t.tabs.pricing },
+                  { id: 'team', label: t.tabs.team },
                 ].map(tab => (
                   <button
                     key={tab.id}
@@ -222,6 +240,30 @@ export function App() {
                 ))}
               </nav>
             )}
+
+            {/* Language Switcher */}
+            <div className="flex items-center rounded-full bg-zinc-900 border border-zinc-800 p-0.5 text-[10px] font-mono font-semibold ml-1">
+              <button
+                onClick={() => setLang('en')}
+                className={`px-2 py-0.5 rounded-full transition-all ${
+                  lang === 'en'
+                    ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLang('es')}
+                className={`px-2 py-0.5 rounded-full transition-all ${
+                  lang === 'es'
+                    ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                ES
+              </button>
+            </div>
 
             {/* Supabase Auth State Trigger */}
             <div className="border-l border-zinc-800 pl-2 flex items-center gap-1.5">
@@ -239,8 +281,8 @@ export function App() {
                   className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-sm flex items-center gap-1 transition-all cursor-pointer whitespace-nowrap"
                 >
                   <Lock className="w-3 h-3" />
-                  <span className="hidden sm:inline">Sign In (Supabase)</span>
-                  <span className="sm:hidden">Sign In</span>
+                  <span className="hidden sm:inline">{t.signIn}</span>
+                  <span className="sm:hidden">{lang === 'es' ? 'Entrar' : 'Sign In'}</span>
                 </button>
               )}
             </div>
@@ -252,11 +294,11 @@ export function App() {
         {currentView === 'dashboard' && (
           <div className="lg:hidden mt-2.5 pt-2.5 border-t border-zinc-800/60 flex items-center gap-1 overflow-x-auto no-scrollbar">
             {[
-              { id: 'overview', label: 'Resumen' },
-              { id: 'workspaces', label: 'Organizaciones' },
-              { id: 'keys', label: 'API Keys' },
-              { id: 'pricing', label: 'Planes & Stripe' },
-              { id: 'team', label: 'Equipo (RBAC)' },
+              { id: 'overview', label: t.tabs.overview },
+              { id: 'workspaces', label: t.tabs.workspaces },
+              { id: 'keys', label: t.tabs.keys },
+              { id: 'pricing', label: t.tabs.pricing },
+              { id: 'team', label: t.tabs.team },
             ].map(tab => (
               <button
                 key={tab.id}
@@ -284,18 +326,18 @@ export function App() {
             <section className="relative pt-6 pb-12 text-center max-w-4xl mx-auto space-y-6">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-mono font-medium backdrop-blur-md shadow-sm">
                 <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Next.js 15 App Router &bull; Supabase Auth &bull; Stripe Checkout</span>
+                <span>{t.hero.badge}</span>
               </div>
 
               <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                Launch Your SaaS to Production <br />
+                {t.hero.title1} <br />
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">
-                  in days, not weeks.
+                  {t.hero.title2}
                 </span>
               </h1>
 
               <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-                Enterprise full stack boilerplate with scalable architecture: secure authentication by Supabase, data isolation via PostgreSQL Row-Level Security, and automated subscription monetization with Stripe.
+                {t.hero.desc}
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
@@ -307,7 +349,7 @@ export function App() {
                   className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-sm shadow-xl shadow-indigo-500/25 transition-all flex items-center gap-2 cursor-pointer active:scale-95"
                 >
                   <Sparkles className="w-4 h-4" />
-                  <span>Start Free Trial</span>
+                  <span>{t.hero.startTrial}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
@@ -316,7 +358,7 @@ export function App() {
                   className="px-8 py-3.5 rounded-2xl bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 hover:text-white border border-zinc-700 font-semibold text-sm transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <LayoutDashboard className="w-4 h-4 text-indigo-400" />
-                  <span>Explore Live Console</span>
+                  <span>{t.hero.exploreConsole}</span>
                 </button>
               </div>
 
@@ -419,13 +461,13 @@ export function App() {
             <div className="p-4 rounded-2xl bg-zinc-900/60 border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
               <div className="flex items-center gap-3">
                 <Building2 className="w-4 h-4 text-indigo-400" />
-                <span className="text-zinc-400">Active Organization:</span>
+                <span className="text-zinc-400">{t.dashboard.activeOrg}</span>
                 <span className="font-bold text-white font-mono bg-zinc-950 px-2.5 py-1 rounded-lg border border-zinc-800">
                   {activeWorkspace}
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-zinc-500 w-full sm:w-auto text-[11px]">Workspace:</span>
+                <span className="text-zinc-500 w-full sm:w-auto text-[11px]">{t.dashboard.switchOrg}</span>
                 {['Acme Global HQ', 'Stripe LatAm', 'Dev Sandbox'].map(ws => (
                   <button
                     key={ws}
@@ -449,10 +491,10 @@ export function App() {
             {/* Top Stat Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { label: 'Monthly API Ingestion', value: '1,420,890', sub: 'Quota: 2M requests (71%)', icon: Zap },
-                { label: 'p99 Response Latency', value: '42ms', sub: 'Global Edge Cache', icon: RefreshCw },
-                { label: 'RLS Security', value: '100% Zero-Trust', sub: 'Supabase Row Level Security', icon: ShieldCheck },
-                { label: 'Billed MRR', value: '$12,480 USD', sub: 'Stripe Billing Live', icon: CreditCard },
+                { label: t.dashboard.monthlyIngest, value: '1,420,890', sub: t.dashboard.quota, icon: Zap },
+                { label: t.dashboard.p99Latency, value: '42ms', sub: t.dashboard.edgeCache, icon: RefreshCw },
+                { label: t.dashboard.rlsSecurity, value: '100% Zero-Trust', sub: t.dashboard.zeroTrust, icon: ShieldCheck },
+                { label: t.dashboard.billedMrr, value: '$12,480 USD', sub: t.dashboard.stripeLive, icon: CreditCard },
               ].map((stat, i) => (
                 <div key={i} className="p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/80 space-y-2">
                   <div className="flex justify-between items-center text-zinc-400">
