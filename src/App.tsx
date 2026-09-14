@@ -154,66 +154,53 @@ export function App() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-white">
       
-      {/* Top Portfolio Integration Bar */}
-      <div className="bg-zinc-900/90 border-b border-zinc-800 px-6 py-2.5 flex items-center justify-between z-40 sticky top-0 backdrop-blur-md">
-        <button
-          onClick={() => window.location.href = "https://portfolio-axel-nine.vercel.app"}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white transition-all shadow-sm"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to Master Portfolio</span>
-        </button>
-
-        <div className="flex items-center gap-2 text-xs font-mono">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-zinc-400">Zero-Trust Supabase RLS &bull; Stripe Webhooks Active</span>
-        </div>
-      </div>
-
-      {/* Main App Navigation Bar */}
-      <header className="border-b border-zinc-800/80 px-6 py-4 bg-zinc-950/60 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      {/* Main App Navigation Bar (Clean & Independent Product Identity) */}
+      <header className="border-b border-zinc-800/80 px-4 sm:px-6 py-3 bg-zinc-950/90 backdrop-blur-xl sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg text-lg">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-md text-base">
               S
             </div>
             <div>
-              <span className="font-extrabold text-lg text-white">SyntroSaaS</span>
-              <span className="text-[10px] font-mono ml-2 px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+              <span className="font-extrabold text-base text-white tracking-tight">SyntroSaaS</span>
+              <span className="text-[10px] font-mono ml-2 px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 hidden sm:inline">
                 Next.js 15 Multi-Tenant
               </span>
             </div>
           </div>
 
-          {/* Nav Tabs */}
-          <div className="flex items-center gap-3">
+          {/* Nav Tabs & Views */}
+          <div className="flex items-center gap-2">
             <button
               onClick={() => setCurrentView('landing')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
                 currentView === 'landing'
                   ? 'bg-zinc-800 text-white border border-zinc-700'
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
               <Globe className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Landing Page</span>
+              <span className="hidden sm:inline">Landing Page</span>
+              <span className="sm:hidden">Landing</span>
             </button>
 
             <button
               onClick={() => setCurrentView('dashboard')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all flex items-center gap-1.5 ${
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
                 currentView === 'dashboard'
-                  ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/40'
+                  ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 font-semibold'
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
               <LayoutDashboard className="w-3.5 h-3.5 text-indigo-400" />
-              <span>SaaS Console</span>
+              <span className="hidden sm:inline">SaaS Console</span>
+              <span className="sm:hidden">Console</span>
             </button>
 
+            {/* Desktop Dashboard Navigation */}
             {currentView === 'dashboard' && (
-              <nav className="hidden lg:flex items-center gap-1 bg-zinc-900/90 p-1 rounded-2xl border border-zinc-800 text-xs font-medium ml-2">
+              <nav className="hidden lg:flex items-center gap-1 bg-zinc-900/90 p-1 rounded-xl border border-zinc-800 text-xs font-medium ml-1">
                 {[
                   { id: 'overview', label: 'Overview' },
                   { id: 'workspaces', label: 'Organizations' },
@@ -224,7 +211,7 @@ export function App() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`px-3 py-1.5 rounded-xl transition-all ${
+                    className={`px-3 py-1.5 rounded-lg transition-all ${
                       activeTab === tab.id
                         ? 'bg-indigo-600 text-white font-semibold shadow-sm'
                         : 'text-zinc-400 hover:text-white hover:bg-zinc-800/60'
@@ -237,12 +224,11 @@ export function App() {
             )}
 
             {/* Supabase Auth State Trigger */}
-            <div className="border-l border-zinc-800 pl-3 flex items-center gap-2">
+            <div className="border-l border-zinc-800 pl-2 flex items-center gap-1.5">
               {isAuthenticated ? (
-                <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-mono text-emerald-400">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="hidden sm:inline">Supabase JWT:</span>
-                  <span className="text-white font-semibold">{authEmail.split('@')[0]}</span>
+                <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-xs font-mono text-emerald-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-white font-semibold text-[11px]">{authEmail.split('@')[0]}</span>
                 </div>
               ) : (
                 <button
@@ -250,20 +236,46 @@ export function App() {
                     setAuthMode('signin');
                     setShowAuthModal(true);
                   }}
-                  className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-md shadow-indigo-600/20 flex items-center gap-1.5 transition-all cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-sm flex items-center gap-1 transition-all cursor-pointer whitespace-nowrap"
                 >
-                  <Lock className="w-3.5 h-3.5" />
-                  <span>Sign In (Supabase)</span>
+                  <Lock className="w-3 h-3" />
+                  <span className="hidden sm:inline">Sign In (Supabase)</span>
+                  <span className="sm:hidden">Sign In</span>
                 </button>
               )}
             </div>
           </div>
 
         </div>
+
+        {/* Mobile Dashboard Sub-Navigation Tabs */}
+        {currentView === 'dashboard' && (
+          <div className="lg:hidden mt-2.5 pt-2.5 border-t border-zinc-800/60 flex items-center gap-1 overflow-x-auto no-scrollbar">
+            {[
+              { id: 'overview', label: 'Resumen' },
+              { id: 'workspaces', label: 'Organizaciones' },
+              { id: 'keys', label: 'API Keys' },
+              { id: 'pricing', label: 'Planes & Stripe' },
+              { id: 'team', label: 'Equipo (RBAC)' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`px-3 py-1 rounded-md text-[11px] font-medium whitespace-nowrap transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-indigo-600 text-white shadow-sm font-semibold'
+                    : 'text-zinc-400 hover:text-white bg-zinc-900/60 border border-zinc-800/80'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        )}
       </header>
 
       {/* App Body Content */}
-      <main className="flex-1 max-w-7xl mx-auto w-full p-6 sm:p-8 space-y-8">
+      <main className="flex-1 max-w-7xl mx-auto w-full px-3.5 py-4 sm:p-8 space-y-6 sm:space-y-8">
         
         {/* VIEW 1: HERO & PRODUCT LANDING PAGE (Glassmorphism & High-Converting) */}
         {currentView === 'landing' && (
@@ -412,15 +424,15 @@ export function App() {
                   {activeWorkspace}
                 </span>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-zinc-500">Switch Workspace:</span>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-zinc-500 w-full sm:w-auto text-[11px]">Workspace:</span>
                 {['Acme Global HQ', 'Stripe LatAm', 'Dev Sandbox'].map(ws => (
                   <button
                     key={ws}
                     onClick={() => setActiveWorkspace(ws)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-mono transition-all ${
+                    className={`px-2 py-1 rounded-md text-[10px] font-mono transition-all whitespace-nowrap ${
                       activeWorkspace === ws
-                        ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40'
+                        ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-semibold'
                         : 'bg-zinc-950 text-zinc-400 border border-zinc-800 hover:text-white'
                     }`}
                   >
