@@ -173,48 +173,99 @@ export function App() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-white">
       
       {/* Main App Navigation Bar (Clean & Independent Product Identity) */}
-      <header className="border-b border-zinc-800/80 px-4 sm:px-6 py-3 bg-zinc-950/90 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <header className="border-b border-zinc-800/80 px-3.5 sm:px-6 py-2.5 sm:py-3 bg-zinc-950/95 backdrop-blur-xl sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
           
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-md text-base">
-              S
+          {/* Top Bar on Mobile / Left Bar on Desktop */}
+          <div className="flex items-center justify-between w-full sm:w-auto">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-md text-base shrink-0">
+                S
+              </div>
+              <div>
+                <span className="font-extrabold text-base text-white tracking-tight">SyntroSaaS</span>
+                <span className="text-[10px] font-mono ml-2 px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 hidden md:inline">
+                  Next.js 15 Multi-Tenant
+                </span>
+              </div>
             </div>
-            <div>
-              <span className="font-extrabold text-base text-white tracking-tight">SyntroSaaS</span>
-              <span className="text-[10px] font-mono ml-2 px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 hidden sm:inline">
-                Next.js 15 Multi-Tenant
-              </span>
+
+            {/* Mobile-Only Actions: Lang + Auth */}
+            <div className="flex sm:hidden items-center gap-2">
+              {/* Language Switcher */}
+              <div className="flex items-center rounded-full bg-zinc-900 border border-zinc-800 p-0.5 text-[10px] font-mono font-semibold">
+                <button
+                  onClick={() => setLang('en')}
+                  className={`px-2 py-0.5 rounded-full transition-all ${
+                    lang === 'en'
+                      ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  EN
+                </button>
+                <button
+                  onClick={() => setLang('es')}
+                  className={`px-2 py-0.5 rounded-full transition-all ${
+                    lang === 'es'
+                      ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                      : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  ES
+                </button>
+              </div>
+
+              {/* Supabase Auth State Trigger */}
+              <div>
+                {isAuthenticated ? (
+                  <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2 py-1 rounded-lg text-xs font-mono text-emerald-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-white font-semibold text-[11px] truncate max-w-[80px]">{authEmail.split('@')[0]}</span>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setAuthMode('signin');
+                      setShowAuthModal(true);
+                    }}
+                    className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-sm flex items-center gap-1 transition-all cursor-pointer whitespace-nowrap min-h-[36px]"
+                  >
+                    <Lock className="w-3 h-3" />
+                    <span>{lang === 'es' ? 'Entrar' : 'Sign In'}</span>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Nav Tabs & Views */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setCurrentView('landing')}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
-                currentView === 'landing'
-                  ? 'bg-zinc-800 text-white border border-zinc-700'
-                  : 'text-zinc-400 hover:text-white'
-              }`}
-            >
-              <Globe className="w-3.5 h-3.5 text-indigo-400" />
-              <span className="hidden sm:inline">Landing Page</span>
-              <span className="sm:hidden">Landing</span>
-            </button>
+          {/* Segmented View Toggle (Full width on mobile, inline on desktop) */}
+          <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-2">
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-1.5 w-full sm:w-auto bg-zinc-900/80 p-1 rounded-xl border border-zinc-800">
+              <button
+                onClick={() => setCurrentView('landing')}
+                className={`w-full sm:w-auto px-3 py-2 sm:py-1.5 rounded-lg text-xs font-mono transition-all flex items-center justify-center gap-1.5 min-h-[40px] sm:min-h-0 ${
+                  currentView === 'landing'
+                    ? 'bg-zinc-800 text-white border border-zinc-700 font-semibold shadow-sm'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5 text-indigo-400" />
+                <span>Landing Page</span>
+              </button>
 
-            <button
-              onClick={() => setCurrentView('dashboard')}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
-                currentView === 'dashboard'
-                  ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/40 font-semibold'
-                  : 'text-zinc-400 hover:text-white'
-              }`}
-            >
-              <LayoutDashboard className="w-3.5 h-3.5 text-indigo-400" />
-              <span className="hidden sm:inline">SaaS Console</span>
-              <span className="sm:hidden">Console</span>
-            </button>
+              <button
+                onClick={() => setCurrentView('dashboard')}
+                className={`w-full sm:w-auto px-3 py-2 sm:py-1.5 rounded-lg text-xs font-mono transition-all flex items-center justify-center gap-1.5 min-h-[40px] sm:min-h-0 ${
+                  currentView === 'dashboard'
+                    ? 'bg-indigo-600 text-white font-semibold shadow-sm'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                <LayoutDashboard className="w-3.5 h-3.5 text-indigo-400" />
+                <span>SaaS Console</span>
+              </button>
+            </div>
 
             {/* Desktop Dashboard Navigation */}
             {currentView === 'dashboard' && (
@@ -241,8 +292,8 @@ export function App() {
               </nav>
             )}
 
-            {/* Language Switcher */}
-            <div className="flex items-center rounded-full bg-zinc-900 border border-zinc-800 p-0.5 text-[10px] font-mono font-semibold ml-1">
+            {/* Desktop Language Switcher */}
+            <div className="hidden sm:flex items-center rounded-full bg-zinc-900 border border-zinc-800 p-0.5 text-[10px] font-mono font-semibold ml-1">
               <button
                 onClick={() => setLang('en')}
                 className={`px-2 py-0.5 rounded-full transition-all ${
@@ -265,8 +316,8 @@ export function App() {
               </button>
             </div>
 
-            {/* Supabase Auth State Trigger */}
-            <div className="border-l border-zinc-800 pl-2 flex items-center gap-1.5">
+            {/* Desktop Supabase Auth State Trigger */}
+            <div className="hidden sm:flex border-l border-zinc-800 pl-2 items-center gap-1.5">
               {isAuthenticated ? (
                 <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-xs font-mono text-emerald-400">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -281,8 +332,7 @@ export function App() {
                   className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-500 hover:to-purple-500 shadow-sm flex items-center gap-1 transition-all cursor-pointer whitespace-nowrap"
                 >
                   <Lock className="w-3 h-3" />
-                  <span className="hidden sm:inline">{t.signIn}</span>
-                  <span className="sm:hidden">{lang === 'es' ? 'Entrar' : 'Sign In'}</span>
+                  <span>{t.signIn}</span>
                 </button>
               )}
             </div>
@@ -329,7 +379,7 @@ export function App() {
                 <span>{t.hero.badge}</span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
                 {t.hero.title1} <br />
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400">
                   {t.hero.title2}
