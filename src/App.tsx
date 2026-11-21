@@ -642,8 +642,8 @@ export function App() {
             </div>
 
             {/* Keys Table */}
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 overflow-hidden">
-              <table className="w-full text-left text-xs">
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/30 overflow-x-auto w-full">
+              <table className="w-full min-w-[650px] text-left text-xs">
                 <thead className="bg-zinc-950 border-b border-zinc-800 text-zinc-500 font-mono uppercase">
                   <tr>
                     <th className="p-4">Identifier</th>
